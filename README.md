@@ -9,7 +9,7 @@ const ra = @import("random_access.zig");
 Create address objects from pointers:
 
 ```zig
-// requires one-item, multi-item, or c-style pointers
+// requires one-item, many-item, or c-style pointers
 var addr = ra.init(slice.ptr);
 
 // move up by one element
@@ -25,7 +25,7 @@ const ptr = addr.one();
 addr.one().* = 42;
 
 // get multi-item pointer:
-const mptr = addr.multi();
+const mptr = addr.many();
 
 // pointer comparisons:
 addr1.lt(addr2);  // less than

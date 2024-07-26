@@ -33,7 +33,7 @@ pub fn Address(comptime T: type) type {
             return @ptrFromInt(self.value);
         }
         /// returns many-item pointer
-        pub fn many(self: Self) Multi(Child, Const) {
+        pub fn many(self: Self) Many(Child, Const) {
             return @ptrFromInt(self.value);
         }
         /// check if pointer is equal to zero.
@@ -67,7 +67,7 @@ fn One(comptime T: type, comptime is_const: bool) type {
     return if (is_const) *const T else *T;
 }
 
-fn Multi(comptime T: type, comptime is_const: bool) type {
+fn Many(comptime T: type, comptime is_const: bool) type {
     return if (is_const) [*]const T else [*]T;
 }
 
