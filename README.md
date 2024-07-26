@@ -1,14 +1,15 @@
 This is a simple type that enables pointer arithmetic on raw addresses in a type safe way.
 
 Use file as direct import:
-```
+
+```zig
 const ra = @import("random_access.zig");
   
 ```
 
 Create address objects from pointers:
 
-```
+```zig
 // requires one-item, multi-item, or c-style pointers
 var addr = ra.init(slice.ptr);
 
