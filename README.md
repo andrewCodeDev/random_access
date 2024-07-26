@@ -19,7 +19,6 @@ addr.add(1);
 // move back by one element
 addr.sub(1);
 
-
 // get one-item pointer:
 const ptr = addr.one();
 
