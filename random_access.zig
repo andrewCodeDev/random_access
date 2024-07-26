@@ -203,6 +203,7 @@ test "slice set values reverse" {
     // create address to first element of array
     const end = ra.init(slice.ptr);
 
+    // iterate until we are one past the beginning
     while (addr.gte(end)) : (addr.sub(1)) {
         addr.one().* = 55;
     }
