@@ -4,7 +4,6 @@ Use file as direct import:
 
 ```zig
 const ra = @import("random_access.zig");
-  
 ```
 
 Create address objects from pointers:
