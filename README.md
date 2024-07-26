@@ -24,7 +24,7 @@ const ptr = addr.one();
 // set value with one-item ptr:
 addr.one().* = 42;
 
-// get multi-item pointer:
+// get many-item pointer:
 const mptr = addr.many();
 
 // pointer comparisons:
