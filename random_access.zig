@@ -97,6 +97,13 @@ fn PointerChild(comptime T: type) type {
     };
 }
 
+///////////////////////////////////////
+//             Testing               //
+///////////////////////////////////////
+
+// simulaties an import
+const ra = @This();
+
 test "slice check addresses" {
 
     const slice = try std.testing.allocator.alloc(i32, 100);
@@ -104,8 +111,10 @@ test "slice check addresses" {
 
     @memset(slice, 42);
     
-    var addr = init(slice.ptr);
+    // create address at beginning of array
+    var addr = ra.init(slice.ptr);
 
+    // loop over slice and check every address
     for (slice) |*value| {
         const n: usize = @intFromPtr(value);
         try std.testing.expect(addr.value == n);
@@ -122,9 +131,13 @@ test "slice iterate" {
     
     @memset(slice, 42);
     
-    var addr = init(slice.ptr);
-    const end = init(slice.ptr + slice.len);
+    // create address at beginning of array
+    var addr = ra.init(slice.ptr);
 
+    // create address at one past end of array
+    const end = ra.init(slice.ptr + slice.len);
+
+    // iterate until we reach the end
     while (addr.lt(end)) : (addr.add(1)) {
         try std.testing.expectEqual(42, addr.one().*);
     }
@@ -139,8 +152,11 @@ test "slice set values" {
     
     @memset(slice, 42);
     
-    var addr = init(slice.ptr);
-    const end = init(slice.ptr + slice.len);
+    // create address at beginning of array
+    var addr = ra.init(slice.ptr);
+
+    // create address at one past end of array
+    const end = ra.init(slice.ptr + slice.len);
 
     while (addr.lt(end)) : (addr.add(1)) {
         addr.one().* = 43;
@@ -153,3 +169,45 @@ test "slice set values" {
     }
 }
 
+test "slice check addresses reverse" {
+
+    const slice = try std.testing.allocator.alloc(i32, 100);
+    defer std.testing.allocator.free(slice);
+    
+    @memset(slice, 42);
+    
+    // create address at one past end of array
+    var addr = ra.init(slice.ptr + slice.len);
+
+    var i: usize = slice.len;
+
+    // loop in reverse and check every address
+    while (i != 0) {
+        i -= 1;
+        addr.sub(1);
+        const n: usize = @intFromPtr(&slice[i]);
+        try std.testing.expect(addr.value == n);
+    }
+}
+
+test "slice set values reverse" {
+
+    const slice = try std.testing.allocator.alloc(i32, 100);
+    defer std.testing.allocator.free(slice);
+    
+    @memset(slice, 42);
+    
+    // create address to last element of array
+    var addr = ra.init(slice.ptr + (slice.len - 1));
+
+    // create address to first element of array
+    const end = ra.init(slice.ptr);
+
+    while (addr.gte(end)) : (addr.sub(1)) {
+        addr.one().* = 55;
+    }
+
+    for (slice) |value| {
+        try std.testing.expectEqual(55, value);
+    }
+}
